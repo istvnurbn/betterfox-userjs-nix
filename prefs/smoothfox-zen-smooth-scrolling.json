@@ -1,0 +1,13 @@
+{
+  "general.smoothScroll.msdPhysics.enabled": true,
+  "general.smoothScroll.currentVelocityWeighting": "0.15",
+  "general.smoothScroll.stopDecelerationWeighting": "0.6",
+  "mousewheel.min_line_scroll_amount": 10,
+  "general.smoothScroll.mouseWheel.durationMinMS": 80,
+  "general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS": 12,
+  "general.smoothScroll.msdPhysics.motionBeginSpringConstant": 600,
+  "general.smoothScroll.msdPhysics.regularSpringConstant": 650,
+  "general.smoothScroll.msdPhysics.slowdownMinDeltaMS": 25,
+  "general.smoothScroll.msdPhysics.slowdownSpringConstant": 250,
+  "mousewheel.default.delta_multiplier_y": 200
+}
