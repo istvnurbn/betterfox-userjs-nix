@@ -9,9 +9,9 @@ mkdir -p prefs
 
 # plain extraction: lines starting with user_pref( -> {"key": value}
 extract() {
-  sed -n '/^user_pref(/ {
+  sed -n '/^[[:space:]]*user_pref(/ {
     s/);.*$//
-    s/^user_pref([[:space:]]*"\([^"]*\)"[[:space:]]*,[[:space:]]*\(.*\)$/{"\1": \2}/p
+    s/^[[:space:]]*user_pref([[:space:]]*"\([^"]*\)"[[:space:]]*,[[:space:]]*\(.*\)$/{"\1": \2}/p
   }'
 }
 
@@ -30,8 +30,9 @@ split_extract() {
       slug = tolower(s)
       next
     }
-    /^user_pref\(/ {
+    /^[ \t]*user_pref\(/ {
       line = $0
+      sub(/^[ \t]*/, "", line)
       sub(/\);.*$/, "", line)
       key = line
       sub(/^user_pref\([ \t]*"/, "", key)
