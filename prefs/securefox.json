@@ -16,6 +16,7 @@
   "privacy.history.custom": true,
   "network.http.speculative-parallel-limit": 0,
   "network.dns.disablePrefetch": true,
+  "network.dns.disablePrefetchFromHTTPS": true,
   "browser.urlbar.speculativeConnect.enabled": false,
   "browser.places.speculativeConnect.enabled": false,
   "network.prefetch-next": false,

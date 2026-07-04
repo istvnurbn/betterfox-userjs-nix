@@ -24,6 +24,7 @@
   "full-screen-api.transition-duration.leave": "0 0",
   "browser.urlbar.suggest.engines": false,
   "browser.urlbar.trending.featureGate": false,
+  "browser.newtabpage.activity-stream.showSponsoredTopSites": false,
   "browser.newtabpage.activity-stream.feeds.section.topstories": false,
   "browser.newtabpage.activity-stream.showSponsored": false,
   "browser.newtabpage.activity-stream.showSponsoredCheckboxes": false,
