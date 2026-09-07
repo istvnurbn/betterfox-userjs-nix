@@ -36,7 +36,6 @@
   "editor.truncate_user_pastes": false,
   "extensions.enabledScopes": 5,
   "network.http.referer.XOriginTrimmingPolicy": 2,
-  "privacy.userContext.ui.enabled": true,
   "pdfjs.enableScripting": false,
   "browser.safebrowsing.downloads.remote.enabled": false,
   "permissions.default.desktop-notification": 2,
@@ -65,6 +64,8 @@
   "app.shield.optoutstudies.enabled": false,
   "app.normandy.enabled": false,
   "app.normandy.api_url": "",
+  "nimbus.rollouts.enabled": false,
   "breakpad.reportURL": "",
-  "browser.tabs.crashReporting.sendReport": false
+  "browser.tabs.crashReporting.sendReport": false,
+  "browser.crashReports.unsubmittedCheck.enabled": false
 }
