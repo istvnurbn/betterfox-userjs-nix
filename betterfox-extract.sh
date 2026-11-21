@@ -56,7 +56,7 @@ mkdir -p prefs
 # start clean so renamed or removed upstream sections do not linger
 rm -f prefs/*.json
 
-for f in user.js Peskyfox.js Securefox.js; do
+for f in user.js Fastfox.js Peskyfox.js Securefox.js; do
   out=$(tr '[:upper:]' '[:lower:]' <<<"${f%.js}") # not ${out,,}: macOS ships bash 3.2
   curl -fsSL "$base/$f" | extract "prefs/$out"
 done

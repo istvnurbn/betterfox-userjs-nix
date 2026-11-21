@@ -30,7 +30,7 @@ flake.nix
           programs.firefox = {
             enable = true;
             profiles.myprofile.settings = inputs.betterfox-userjs.lib.mkSettings {
-              enable = [ "securefox" "peskyfox" "smoothfox-smooth-scrolling" ];
+              enable = [ "fastfox" "securefox" "peskyfox" "smoothfox-smooth-scrolling" ];
               overrides = {
                 "browser.startup.page" = 3; # restore session
               };
@@ -46,6 +46,6 @@ flake.nix
 > [!NOTE]
 > The `smoothfox-*` options are **mutually exclusive** — enable exactly one.
 >
-> `user` is Betterfox's combined file: it already contains the Securefox
-> and Peskyfox settings. Use either `enable = [ "user" ]` _or_ a selection
+> `user` is Betterfox's combined file: it already contains the Fastfox,
+> Securefox and Peskyfox settings. Use either `enable = [ "user" ]` _or_ a selection
 > of the individual modules — combining `user` with the others is redundant.

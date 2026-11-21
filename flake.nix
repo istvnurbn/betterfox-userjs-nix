@@ -23,7 +23,7 @@
       # later modules win, overrides win last;
       # pick exactly ONE smoothfox-* option -- they are alternatives
       mkSettings = {
-        enable ? ["securefox" "peskyfox"],
+        enable ? ["fastfox" "securefox" "peskyfox"],
         overrides ? {},
       }:
         builtins.foldl' (acc: name: acc // betterfox.${name}) {} enable

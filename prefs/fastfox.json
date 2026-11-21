@@ -1,0 +1,15 @@
+{
+  "gfx.content.skia-font-cache-size": 20,
+  "content.notify.interval": 100000,
+  "gfx.canvas.accelerated.cache-size": 512,
+  "media.cache_readahead_limit": 3600,
+  "media.cache_resume_threshold": 1800,
+  "image.mem.decode_bytes_at_a_time": 32768,
+  "network.buffer.cache.size": 65535,
+  "network.buffer.cache.count": 48,
+  "network.http.max-connections": 1800,
+  "network.http.max-persistent-connections-per-server": 10,
+  "network.http.max-urgent-start-excessive-connections-per-host": 5,
+  "network.http.request.max-start-delay": 5,
+  "network.dnsCacheExpiration": 3600
+}
