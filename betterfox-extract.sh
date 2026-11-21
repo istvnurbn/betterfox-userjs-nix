@@ -54,8 +54,8 @@ extract() {
 }
 
 for f in user.js Peskyfox.js Securefox.js; do
-  out="${f%.js}"
-  curl -fsSL "$base/$f" | extract "prefs/${out,,}"
+  out=$(tr '[:upper:]' '[:lower:]' <<<"${f%.js}") # not ${out,,}: macOS ships bash 3.2
+  curl -fsSL "$base/$f" | extract "prefs/$out"
 done
 
 curl -fsSL "$base/Smoothfox.js" | extract prefs/smoothfox 1
