@@ -3,12 +3,6 @@
 # for Smoothfox, one file per OPTION section as they are mutually exclusive
 set -euo pipefail
 
-base="https://raw.githubusercontent.com/yokoffing/Betterfox/main"
-
-mkdir -p prefs
-# start clean so renamed or removed upstream sections do not linger
-rm -f prefs/*.json
-
 # {"key": value} per active user_pref() line of stdin -> <outbase>.json;
 # with bysection=1, prefs are grouped by "* OPTION: NAME" headers into
 # <outbase>-<option-slug>.json (prefs before any header -> <outbase>.json)
@@ -30,7 +24,7 @@ extract() {
     /^[ \t]*user_pref\(/ {
       line = $0
       sub(/^[ \t]*/, "", line)
-      sub(/\);.*$/, "", line)
+      sub(/\);.*/, "", line)
       key = line
       sub(/^user_pref\([ \t]*"/, "", key)
       sub(/".*$/, "", key)
@@ -52,6 +46,15 @@ extract() {
   done
   rm -rf "$tmp"
 }
+
+# sourced by tests/extract-test.sh: define extract() only
+[ "${BASH_SOURCE[0]}" = "$0" ] || return 0
+
+base="https://raw.githubusercontent.com/yokoffing/Betterfox/main"
+
+mkdir -p prefs
+# start clean so renamed or removed upstream sections do not linger
+rm -f prefs/*.json
 
 for f in user.js Peskyfox.js Securefox.js; do
   out=$(tr '[:upper:]' '[:lower:]' <<<"${f%.js}") # not ${out,,}: macOS ships bash 3.2
