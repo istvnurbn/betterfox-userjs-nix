@@ -9,21 +9,16 @@ mkdir -p prefs
 # start clean so renamed or removed upstream sections do not linger
 rm -f prefs/*.json
 
-# plain extraction: lines starting with user_pref( -> {"key": value}
+# {"key": value} per active user_pref() line of stdin -> <outbase>.json;
+# with bysection=1, prefs are grouped by "* OPTION: NAME" headers into
+# <outbase>-<option-slug>.json (prefs before any header -> <outbase>.json)
 extract() {
-  sed -n '/^[[:space:]]*user_pref(/ {
-    s/);.*$//
-    s/^[[:space:]]*user_pref([[:space:]]*"\([^"]*\)"[[:space:]]*,[[:space:]]*\(.*\)$/{"\1": \2}/p
-  }'
-}
-
-# like extract, but groups prefs by "* OPTION: NAME" headers and writes
-# <outbase>-<option-slug>.json per section (prefs before any header -> <outbase>.json)
-split_extract() {
-  local outbase="$1" tmp j name out
+  local outbase="$1" bysection="${2:-0}" tmp j name out
   tmp=$(mktemp -d)
-  awk -v out="$tmp/" '
-    /OPTION:/ {
+  # always emit <outbase>.json in plain mode, so an empty source trips the guard below
+  [ "$bysection" = 1 ] || touch "$tmp/__base__.jsonl"
+  awk -v out="$tmp/" -v bysection="$bysection" '
+    bysection == 1 && /OPTION:/ {
       s = $0
       sub(/.*OPTION:[ \t]*/, "", s)
       sub(/[ \t*\/]*$/, "", s)
@@ -59,12 +54,11 @@ split_extract() {
 }
 
 for f in user.js Peskyfox.js Securefox.js; do
-  out="${f%.js}"; out="${out,,}.json"
-  curl -fsSL "$base/$f" | extract | jq -s 'add // {}' > "prefs/$out"
-  echo "wrote prefs/$out"
+  out="${f%.js}"
+  curl -fsSL "$base/$f" | extract "prefs/${out,,}"
 done
 
-curl -fsSL "$base/Smoothfox.js" | split_extract "prefs/smoothfox"
+curl -fsSL "$base/Smoothfox.js" | extract prefs/smoothfox 1
 
 # an empty module means upstream changed format and prefs were dropped silently
 for f in prefs/*.json; do
