@@ -44,7 +44,8 @@ flake.nix
 ```
 
 > [!NOTE]
-> The `smoothfox-*` options are **mutually exclusive** — enable exactly one.
+> The `smoothfox-*` options are **mutually exclusive** — enable at most one;
+> `mkSettings` fails if you enable more.
 >
 > `user` is Betterfox's combined file: it already contains the Fastfox,
 > Securefox and Peskyfox settings. Use either `enable = [ "user" ]` _or_ a selection

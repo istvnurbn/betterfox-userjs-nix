@@ -20,14 +20,16 @@
         })
         jsonNames);
 
-      # later modules win, overrides win last;
-      # pick exactly ONE smoothfox-* option -- they are alternatives
+      # later modules win, overrides win last
       mkSettings = {
         enable ? ["fastfox" "securefox" "peskyfox"],
         overrides ? {},
       }:
-        builtins.foldl' (acc: name: acc // betterfox.${name}) {} enable
-        // overrides;
+        if builtins.length (builtins.filter (n: builtins.match "smoothfox-.*" n != null) enable) > 1
+        then throw "betterfox mkSettings: enable at most one smoothfox-* option, they are alternatives"
+        else
+          builtins.foldl' (acc: name: acc // betterfox.${name}) {} enable
+          // overrides;
     };
   };
 }
