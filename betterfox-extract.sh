@@ -6,6 +6,8 @@ set -euo pipefail
 base="https://raw.githubusercontent.com/yokoffing/Betterfox/main"
 
 mkdir -p prefs
+# start clean so renamed or removed upstream sections do not linger
+rm -f prefs/*.json
 
 # plain extraction: lines starting with user_pref( -> {"key": value}
 extract() {
@@ -18,7 +20,7 @@ extract() {
 # like extract, but groups prefs by "* OPTION: NAME" headers and writes
 # <outbase>-<option-slug>.json per section (prefs before any header -> <outbase>.json)
 split_extract() {
-  local outbase="$1" tmp j name
+  local outbase="$1" tmp j name out
   tmp=$(mktemp -d)
   awk -v out="$tmp/" '
     /OPTION:/ {
@@ -47,11 +49,11 @@ split_extract() {
   for j in "$tmp"/*.jsonl; do
     [ -e "$j" ] || continue
     name=$(basename "$j" .jsonl)
-    if [ "$name" = "__base__" ]; then
-      jq -s 'add // {}' "$j" > "${outbase}.json" && echo "wrote ${outbase}.json"
-    else
-      jq -s 'add // {}' "$j" > "${outbase}-${name}.json" && echo "wrote ${outbase}-${name}.json"
-    fi
+    out="${outbase}-${name}.json"
+    [ "$name" = "__base__" ] && out="${outbase}.json"
+    # explicit return: set -e is off inside && lists and if-conditions
+    jq -s 'add // {}' "$j" > "$out" || return 1
+    echo "wrote $out"
   done
   rm -rf "$tmp"
 }
@@ -63,3 +65,9 @@ for f in user.js Peskyfox.js Securefox.js; do
 done
 
 curl -fsSL "$base/Smoothfox.js" | split_extract "prefs/smoothfox"
+
+# an empty module means upstream changed format and prefs were dropped silently
+for f in prefs/*.json; do
+  jq -e 'length > 0' "$f" >/dev/null || { echo "error: $f has no prefs" >&2; exit 1; }
+done
+compgen -G 'prefs/smoothfox-*.json' >/dev/null || { echo "error: no smoothfox sections" >&2; exit 1; }
