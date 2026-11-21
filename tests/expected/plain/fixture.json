@@ -1,0 +1,7 @@
+{
+  "base.bool": true,
+  "first.indented": 1,
+  "first.string": "a b",
+  "second.spaced": -5,
+  "second.dup": 2
+}
